@@ -2,11 +2,12 @@
 from typing import Callable
 
 import random
+
 import numpy as np
 import pandas as pd
 
 
-class MyLineReg():
+class MyLineReg:
     ''' Custom linear regression '''
     def __init__(self,
         n_iter: int = 10,
@@ -38,18 +39,20 @@ class MyLineReg():
 
     def get_mse_loss(self, y_true: pd.Series, y_pred: pd.Series) -> pd.Series:
         ''' Compute MSE loss '''
+        loss = ((y_true - y_pred)**2).mean()
+
         if self.reg:
 
             if self.reg == 'l1':
-                return ((y_true - y_pred)**2).mean() + self.l1_coef * np.abs(self.weights).sum()
+                return loss + self.l1_coef * np.abs(self.weights).sum()
 
             if self.reg == 'l2':
-                return ((y_true - y_pred)**2).mean() + self.l2_coef * (self.weights ** 2).sum()
+                return loss + self.l2_coef * (self.weights ** 2).sum()
 
-            return ((y_true - y_pred)**2).mean() + self.l1_coef * np.abs(self.weights).sum() \
+            return loss + self.l1_coef * np.abs(self.weights).sum() \
                 + self.l2_coef * (self.weights ** 2).sum()
 
-        return ((y_true - y_pred)**2).mean()
+        return loss
 
     def get_gradient(self,
         y_true: pd.Series,
@@ -57,21 +60,22 @@ class MyLineReg():
         X: pd.DataFrame
     ) -> pd.Series:
         ''' Compute gradient vector '''
+        gradient = ((y_pred - y_true).dot(X) * 2/X.shape[0])
+
         if self.reg:
             weights_grad = self.weights.copy()
 
             if self.reg == 'l1':
                 weights_grad[weights_grad < 0] = -1
                 weights_grad[weights_grad > 0] = 1
-                return ((y_pred - y_true).dot(X) * 2/X.shape[0]) + self.l1_coef * weights_grad
+                return gradient + self.l1_coef * weights_grad
 
             if self.reg == 'l2':
-                return ((y_pred - y_true).dot(X) * 2/X.shape[0]) + 2 * self.l2_coef * weights_grad
+                return gradient + 2 * self.l2_coef * weights_grad
 
-            grad = ((y_pred - y_true).dot(X) * 2/X.shape[0]) + 2 * self.l2_coef * weights_grad
             weights_grad[weights_grad < 0] = -1
             weights_grad[weights_grad > 0] = 1
-            return grad + self.l1_coef * weights_grad
+            return gradient + self.l1_coef * weights_grad + 2 * self.l2_coef * self.weights
 
         return (y_pred - y_true).dot(X) * 2/X.shape[0]
 
@@ -112,11 +116,13 @@ class MyLineReg():
 
             # sample random batch for SGD
             if isinstance(self.sgd_sample, int):
-                sample_rows_idx = random.sample(range(X.shape[0]), 
-                                                self.sgd_sample)
+                sample_rows_idx = random.sample(range(X.shape[0]), self.sgd_sample)
+
             elif isinstance(self.sgd_sample, float):
-                sample_rows_idx = random.sample(range(X.shape[0]), 
-                                                int(X.shape[0] * self.sgd_sample))
+                sample_rows_idx = random.sample(
+                    range(X.shape[0]), int(X.shape[0] * self.sgd_sample)
+                )
+
             else:
                 sample_rows_idx = list(range(X.shape[0]))
 
