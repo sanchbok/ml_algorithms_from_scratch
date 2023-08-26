@@ -6,7 +6,7 @@ import pandas as pd
 
 
 class MyKNNClf:
-    ''' Custom knn regressor '''
+    ''' Custom KNN classifier '''
     def __init__(self,
         k: int = 3,
         metric: Literal['euclidean', 'chebyshev', 'manhattan', 'cosine'] = 'euclidean',
