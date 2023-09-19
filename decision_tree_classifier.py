@@ -64,17 +64,10 @@ class MyTreeClf:
         right_samples: pd.Series,
     ) -> float:
         ''' Compute feature importance for tree node '''
-        left_num = len(left_samples)
-        right_num = len(right_samples)
-        node_num = left_num + right_num
-
-        left_criterion = self._get_criterion(left_samples)
-        right_criterion = self._get_criterion(right_samples)
         node_criterion = self._get_criterion(pd.concat([left_samples, right_samples]))
-
-        return node_num/self.total_samples * (
-            node_criterion - (left_num * left_criterion + right_num * right_criterion)/node_num
-        )
+        criterion_gain = self._get_criterion_gain(left_samples, right_samples, node_criterion)
+        node_num = len(left_samples) + len(right_samples)
+        return node_num/self.total_samples * criterion_gain
 
     def _get_thresholds(self, X: pd.DataFrame) -> Dict[str, List[float]]:
         ''' Compute features' threshold values to split target '''
