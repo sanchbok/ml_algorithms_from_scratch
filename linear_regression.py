@@ -9,7 +9,8 @@ import pandas as pd
 
 class MyLineReg:
     ''' Custom linear regression '''
-    def __init__(self,
+    def __init__(
+        self,
         n_iter: int = 10,
         learning_rate: float | Callable[[int], float] = 0.5,
         metric: str = None,
@@ -54,7 +55,8 @@ class MyLineReg:
 
         return loss
 
-    def get_gradient(self,
+    def get_gradient(
+        self,
         y_true: pd.Series,
         y_pred: pd.Series,
         X: pd.DataFrame

@@ -9,7 +9,8 @@ import pandas as pd
 
 class MyLogReg:
     ''' Custom logistic regression '''
-    def __init__(self,
+    def __init__(
+        self,
         n_iter: int = 10,
         learning_rate: float | Callable[[int], float] = 0.1,
         metric: Literal['accuracy', 'precision', 'recall', 'f1', 'roc_auc'] = None,

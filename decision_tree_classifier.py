@@ -7,7 +7,8 @@ import pandas as pd
 
 class MyTreeClf:
     ''' Custom decision tree classifier class '''
-    def __init__(self,
+    def __init__(
+        self,
         max_depth: int = 5,
         min_samples_split: int = 2,
         max_leafs: int = 20,
@@ -57,7 +58,8 @@ class MyTreeClf:
             n_right/(n_left + n_right) * criterion_right
         return criterion - new_criterion
 
-    def _get_feature_importance(self,
+    def _get_feature_importance(
+        self,
         left_samples: pd.Series,
         right_samples: pd.Series,
     ) -> float:

@@ -7,7 +7,8 @@ import pandas as pd
 
 class MyKNNReg:
     ''' Custom KNN regressor '''
-    def __init__(self,
+    def __init__(
+        self,
         k: int = 3,
         metric: Literal['euclidean', 'chebyshev', 'manhattan', 'cosine'] = 'euclidean',
         weight: Literal['uniform', 'rank', 'distance'] = 'uniform'
