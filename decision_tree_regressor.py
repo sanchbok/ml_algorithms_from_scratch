@@ -24,7 +24,7 @@ class MyTreeReg:
         self.max_leafs = max_leafs
         self.leafs_cnt = 0
         self.bins = bins
-        self.total_samples = total_samples # param for use with gradient boosting
+        self.total_samples = total_samples
 
     def __str__(self) -> str:
         return (
