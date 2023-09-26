@@ -16,13 +16,15 @@ class MyTreeReg:
         max_depth: int = 5,
         min_samples_split: int = 2,
         max_leafs: int = 20,
-        bins: int = None
+        bins: int = None,
+        total_samples: int = None
     ) -> None:
         self.max_depth = max_depth
         self.min_samples_split = min_samples_split
         self.max_leafs = max_leafs
         self.leafs_cnt = 0
         self.bins = bins
+        self.total_samples = total_samples # param for use with gradient boosting
 
     def __str__(self) -> str:
         return (
@@ -118,7 +120,8 @@ class MyTreeReg:
 
         self.fi = {col: 0 for col in X.columns}
         self.thresholds = self._get_thresholds(X)
-        self.total_samples = X.shape[0]
+        if not self.total_samples:
+            self.total_samples = X.shape[0]
         self.fitted_tree = helper(X, y)
 
     def get_best_split(self, X: pd.DataFrame, y: pd.Series) -> Tuple[str, float, float]:
