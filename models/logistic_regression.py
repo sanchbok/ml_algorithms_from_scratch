@@ -81,7 +81,7 @@ class MyLogReg:
             for _, row in total.iterrows():
                 if row.true == 0:
                     higher = sum(total.loc[total.pred > row.pred, 'true'] > 0)
-                    equal = sum(total.loc[total.pred == row.pred, 'true'] > 0)
+                    equal = sum(total.loc[total.pred == row.pred, 'true'] > 0)/2
                     score += higher + equal
 
             return score/(sum(y_true == 1) * sum(y_true == 0))

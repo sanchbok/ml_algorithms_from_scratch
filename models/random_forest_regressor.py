@@ -4,6 +4,7 @@ Custom random forest regressor
 import random
 from typing import Literal
 
+import numpy as np
 import pandas as pd
 
 from decision_tree_regressor import MyTreeReg
@@ -85,7 +86,9 @@ class MyForestReg:
             tree.fit(X_sample, y_sample)
 
             if self.oob_score:
-                oob_idx = list(set(range(X.shape[0])) - set(rows_idx))
+                oob_idx = np.setdiff1d(
+                    np.arange(X.shape[0]), rows_idx
+                )
                 X_sample_oob = X.reset_index(drop=True)[cols_idx].iloc[oob_idx]
                 oob_predictions = pd.concat([oob_predictions, tree.predict(X_sample_oob)])
 
@@ -105,8 +108,7 @@ class MyForestReg:
         """
         Predict target values
         """
-        predictions = pd.Series([0 for _ in range(X.shape[0])], index=X.index)
+        predictions = pd.Series(np.zeros(X.shape[0]), index=X.index)
         for tree in self.trees:
-            prediction = tree.predict(X)
-            predictions += prediction
+            predictions += tree.predict(X)
         return predictions/self.n_estimators

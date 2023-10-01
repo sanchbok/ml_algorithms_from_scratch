@@ -13,7 +13,8 @@ class MyTreeClf:
         min_samples_split: int = 2,
         max_leafs: int = 20,
         bins: int = None,
-        criterion: Literal['entropy', 'gini'] = 'entropy'
+        criterion: Literal['entropy', 'gini'] = 'entropy',
+        total_samples: int = None
     ) -> None:
 
         self.max_depth = max_depth
@@ -22,6 +23,7 @@ class MyTreeClf:
         self.leafs_cnt = 0
         self.bins = bins
         self.criterion = criterion
+        self.total_samples = total_samples
 
     def __str__(self) -> str:
         return (
@@ -133,7 +135,8 @@ class MyTreeClf:
 
         self.fi = {col: 0 for col in X.columns}
         self.thresholds = self._get_thresholds(X)
-        self.total_samples = X.shape[0]
+        if not self.total_samples:
+            self.total_samples = X.shape[0]
         self.fitted_tree = helper(X, y)
 
     def get_best_split(self, X: pd.DataFrame, y: pd.Series) -> Tuple[str, float, float]:
