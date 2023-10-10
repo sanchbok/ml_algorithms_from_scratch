@@ -8,7 +8,9 @@ import pandas as pd
 
 
 class MyLineReg:
-    ''' Custom linear regression '''
+    """ 
+    Custom linear regression 
+    """
     def __init__(
         self,
         n_iter: int = 100,
@@ -39,7 +41,9 @@ class MyLineReg:
         return f'MyLineReg class: n_iter={self.n_iter}, learning_rate={self.learning_rate}'
 
     def get_mse_loss(self, y_true: pd.Series, y_pred: pd.Series) -> pd.Series:
-        ''' Compute MSE loss '''
+        """ 
+        Compute MSE loss 
+        """
         loss = ((y_true - y_pred)**2).mean()
 
         if self.reg:
@@ -84,7 +88,9 @@ class MyLineReg:
         return (y_pred - y_true).dot(X) * 2/X.shape[0]
 
     def get_metric(self, y_true: pd.Series, y_pred: pd.Series) -> pd.Series:
-        ''' Compute metric '''
+        """
+        Compute metric 
+        """
         if self.metric == 'mae':
             return (y_true - y_pred).abs().mean()
 
@@ -103,7 +109,9 @@ class MyLineReg:
         raise ValueError('Unknown metric')
 
     def fit(self, X: pd.DataFrame, y: pd.Series, verbose: bool | int = False) -> None:
-        ''' Optimize weights of regression '''
+        """ 
+        Optimize weights of regression 
+        """
         random.seed(self.random_state)
 
         # copy data
@@ -160,16 +168,22 @@ class MyLineReg:
             self.__best_score = self.get_metric(y, copy_X.dot(self.weights))
 
     def get_coef(self) -> np.array:
-        ''' Return weights values '''
+        """ 
+        Return weights values 
+        """
         return np.array(self.weights)[1:]
 
     def predict(self, X: pd.DataFrame) -> pd.Series:
-        ''' Return predictions '''
+        """ 
+        Return predictions 
+        """
         copy_X = X.copy(deep=True)
         copy_X.insert(0, 'const', 1)
 
         return copy_X.dot(self.weights)
 
     def get_best_score(self) -> float:
-        ''' Return latest metric value '''
+        """
+        Return latest metric value 
+        """
         return self.__best_score

@@ -10,6 +10,9 @@ import pandas as pd
 
 
 class MyBaggingReg:
+    """
+    Custom bagging regressor
+    """
     def __init__(
         self,
         estimator: Type = None,
