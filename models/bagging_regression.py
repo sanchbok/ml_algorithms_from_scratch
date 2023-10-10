@@ -104,4 +104,4 @@ class MyBaggingReg:
         predictions = np.zeros(len(X))
         for model in self.estimators:
             predictions += np.asarray(model.predict(X))
-        return predictions/self.n_estimators
+        return pd.Series(predictions/self.n_estimators, index=X.index)
