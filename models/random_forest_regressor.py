@@ -99,9 +99,9 @@ class MyForestReg:
                 self.fi[col] += tree.fi[col]
 
         if self.oob_score:
-            oob_predictions = oob_predictions.groupby(level=0).mean().sort_index()
+            oob_predictions = oob_predictions.groupby(level=0).mean()
             self.oob_score_ = self._get_oob_score(
-                y[oob_predictions.index], oob_predictions
+                y.reset_index(drop=True)[oob_predictions.index], oob_predictions
             )
 
     def predict(self, X: pd.DataFrame) -> pd.Series:

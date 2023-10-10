@@ -11,8 +11,8 @@ class MyLineReg:
     ''' Custom linear regression '''
     def __init__(
         self,
-        n_iter: int = 10,
-        learning_rate: float | Callable[[int], float] = 0.5,
+        n_iter: int = 100,
+        learning_rate: float | Callable[[int], float] = 0.1,
         metric: str = None,
         reg: str = None,
         l1_coef: float = 0,
@@ -61,8 +61,10 @@ class MyLineReg:
         y_pred: pd.Series,
         X: pd.DataFrame
     ) -> pd.Series:
-        ''' Compute gradient vector '''
-        gradient = ((y_pred - y_true).dot(X) * 2/X.shape[0])
+        """
+        Compute gradient vector 
+        """
+        gradient = (y_pred - y_true).dot(X) * 2/X.shape[0]
 
         if self.reg:
             weights_grad = self.weights.copy()
